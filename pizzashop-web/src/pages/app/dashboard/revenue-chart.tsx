@@ -1,12 +1,5 @@
-import {
-  CartesianGrid,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts'
+import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import colors from 'tailwindcss/colors'
 
 import {
   Card,
@@ -15,6 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+
+const data = [
+  { date: '10/12', revenue: 1200 },
+  { date: '11/12', revenue: 800 },
+  { date: '12/12', revenue: 900 },
+  { date: '13/12', revenue: 400 },
+  { date: '14/12', revenue: 2300 },
+  { date: '15/12', revenue: 800 },
+  { date: '16/12', revenue: 640 },
+]
 
 export function RevenueCharts() {
   return (
@@ -30,8 +33,28 @@ export function RevenueCharts() {
 
       <CardContent>
         <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={[]} style={{ fontSize: 12 }}></LineChart>
-          {/* Parei no minuto 6:09 */}
+          <LineChart data={data} style={{ fontSize: 12 }}>
+            <XAxis dataKey="date" tickLine={false} axisLine={false} dy={16} />
+
+            <YAxis
+              width={80}
+              stroke="#888"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(value: number) =>
+                value.toLocaleString('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL',
+                })
+              }
+            />
+            <Line
+              type="linear"
+              strokeWidth={2}
+              dataKey="revenue"
+              stroke={colors.violet['500']}
+            />
+          </LineChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
