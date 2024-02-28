@@ -4,6 +4,8 @@ import { Utensils } from 'lucide-react'
 import { getDayOrdersAmount } from '@/api/get-day-orders-amount'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+import { MetricCardSkeleton } from './metric-card-skeleton'
+
 export function DayOrdersAmountCard() {
   const { data: dayOrdersAmount } = useQuery({
     queryFn: getDayOrdersAmount,
@@ -19,30 +21,34 @@ export function DayOrdersAmountCard() {
         <Utensils className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
 
-      {dayOrdersAmount && (
-        <CardContent className="space-y-2">
-          <span className="text-2xl font-bold tracking-tight">
-            {dayOrdersAmount.amount.toLocaleString('pt-BR')}
-          </span>
-          <p className="text-xs text-muted-foreground">
-            {dayOrdersAmount.diffFromYesterday >= 0 ? (
-              <>
-                <span className="text-rose-500 dark:text-emerald-400">
-                  + {dayOrdersAmount.diffFromYesterday}%
-                </span>{' '}
-                em relação a ontem
-              </>
-            ) : (
-              <>
-                <span className="text-rose-500 dark:text-rose-400">
-                  {dayOrdersAmount.diffFromYesterday}%
-                </span>{' '}
-                em relação a ontem
-              </>
-            )}
-          </p>
-        </CardContent>
-      )}
+      <CardContent className="space-y-2">
+        {dayOrdersAmount ? (
+          <>
+            <span className="text-2xl font-bold tracking-tight">
+              {dayOrdersAmount.amount.toLocaleString('pt-BR')}
+            </span>
+            <p className="text-xs text-muted-foreground">
+              {dayOrdersAmount.diffFromYesterday >= 0 ? (
+                <>
+                  <span className="text-rose-500 dark:text-emerald-400">
+                    + {dayOrdersAmount.diffFromYesterday}%
+                  </span>{' '}
+                  em relação a ontem
+                </>
+              ) : (
+                <>
+                  <span className="text-rose-500 dark:text-rose-400">
+                    {dayOrdersAmount.diffFromYesterday}%
+                  </span>{' '}
+                  em relação a ontem
+                </>
+              )}
+            </p>
+          </>
+        ) : (
+          <MetricCardSkeleton />
+        )}
+      </CardContent>
     </Card>
   )
 }

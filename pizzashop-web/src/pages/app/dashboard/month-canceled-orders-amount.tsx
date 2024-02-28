@@ -4,6 +4,8 @@ import { DollarSign } from 'lucide-react'
 import { getMonthCancelOrdersAmount } from '@/api/get-month-cancel-amount'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+import { MetricCardSkeleton } from './metric-card-skeleton'
+
 export function MonthCanceledOrdersAmountCard() {
   const { data: monthCanceledOrdersAmount } = useQuery({
     queryFn: getMonthCancelOrdersAmount,
@@ -19,30 +21,34 @@ export function MonthCanceledOrdersAmountCard() {
         <DollarSign className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
 
-      {monthCanceledOrdersAmount && (
-        <CardContent className="space-y-2">
-          <span className="text-2xl font-bold tracking-tight">
-            {monthCanceledOrdersAmount.amount.toLocaleString('pt-BR')}
-          </span>
-          <p className="text-xs text-muted-foreground">
-            {monthCanceledOrdersAmount.diffFromLastMonth <= 0 ? (
-              <>
-                <span className="text-rose-500 dark:text-emerald-400">
-                  {monthCanceledOrdersAmount.diffFromLastMonth}%
-                </span>{' '}
-                em relação ao mês passado
-              </>
-            ) : (
-              <>
-                <span className="text-rose-500 dark:text-rose-400">
-                  + {monthCanceledOrdersAmount?.diffFromLastMonth}%
-                </span>{' '}
-                em relação ao mês passado
-              </>
-            )}
-          </p>
-        </CardContent>
-      )}
+      <CardContent className="space-y-2">
+        {monthCanceledOrdersAmount ? (
+          <>
+            <span className="text-2xl font-bold tracking-tight">
+              {monthCanceledOrdersAmount.amount.toLocaleString('pt-BR')}
+            </span>
+            <p className="text-xs text-muted-foreground">
+              {monthCanceledOrdersAmount.diffFromLastMonth <= 0 ? (
+                <>
+                  <span className="text-rose-500 dark:text-emerald-400">
+                    {monthCanceledOrdersAmount.diffFromLastMonth}%
+                  </span>{' '}
+                  em relação ao mês passado
+                </>
+              ) : (
+                <>
+                  <span className="text-rose-500 dark:text-rose-400">
+                    + {monthCanceledOrdersAmount?.diffFromLastMonth}%
+                  </span>{' '}
+                  em relação ao mês passado
+                </>
+              )}
+            </p>
+          </>
+        ) : (
+          <MetricCardSkeleton />
+        )}
+      </CardContent>
     </Card>
   )
 }
